@@ -1,0 +1,22 @@
+<template>
+  <div id="editor"></div>
+  <div id="counter">0</div>
+</template>
+
+<style scoped>
+body {
+  padding: 25px;
+}
+
+#editor {
+  border: 1px solid #ccc;
+}
+
+#counter {
+  border: 1px solid #ccc;
+  border-width: 0px 1px 1px 1px;
+  color: #aaa;
+  padding: 5px 15px; 
+  text-align: right;
+}
+</style>
