@@ -1,17 +1,19 @@
 <template>
   
-  <h1>Project Denote</h1> <!-- Application Name-->
+  <TitleCard/>
   <text-area  class="editor"/>
   <!--  -->
 </template>
 
 <script>
 import TextArea from "./components/TextEditor/TheTextArea.vue";
+import TitleCard from "./components/Cards/TitleCard.vue";
 
 export default {
   name: "App",
   components: {
     TextArea,
+    TitleCard
   },
 };
 </script>
