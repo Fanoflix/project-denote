@@ -3,6 +3,9 @@
   <div id="counter">0</div>
 </template>
 
+<script>
+export default {};
+</script>
 <style scoped>
 body {
   padding: 25px;
@@ -16,7 +19,7 @@ body {
   border: 1px solid #ccc;
   border-width: 0px 1px 1px 1px;
   color: #aaa;
-  padding: 5px 15px; 
+  padding: 5px 15px;
   text-align: right;
 }
 </style>
