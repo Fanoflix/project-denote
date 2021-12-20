@@ -1,57 +1,66 @@
 <template>
-  <div class="container">
-    <quill-editor
-      class="editor"
-      v-model:value="options.content"
-      toolbar="full"
-      theme="bubble"
-      :options="options"
-    />
+  <div class="main-text-container">
+    <h5 class="topic">
+      {{ topic }}
+    </h5>
+    <!-- <template v-for="(child, index) in blocks" :key="index + count">
+      <TextBlock @add-new-block="createNewBlock" :index="index" :is="child">
+      </TextBlock>
+    </template> -->
+
+    <TextBlock />
   </div>
 </template>
 
 <script>
-import { QuillEditor } from "@vueup/vue-quill";
-// import "@vueup/vue-quill/dist/vue-quill.snow.css";
-import "@vueup/vue-quill/dist/vue-quill.bubble.css";
-
+import TextBlock from "./TextBlock.vue";
 export default {
-  props: [],
-  emits: [],
   components: {
-    QuillEditor,
+    TextBlock,
   },
   data() {
     return {
-      options: {
-        theme: "bubble",
-        debug: "info",
-        content: "",
-        modules: {
-          toolbar: ["bold", "italic", "underline"],
-        },
-        placeholder: "Start taking notes...",
-        // readOnly: true,
-        toolbar: "full",
-      },
+      count: 1,
+      topic: "Testing",
+      blocks: [{ name: "TextBlock" }],
     };
+  },
+  methods: {
+    createNewBlock() {
+      this.blocks.push({ name: "TextBlock" });
+    },
   },
 };
 </script>
 
 <style scoped>
-.container {
-  padding: 0 10px;
-  width: 70%;
-  max-width: 1500px;
-  min-width: 500px;
 
-  margin-top: 20px;
-
-  border: 1px solid black;
+.main-text-container {
+  width: 80%;
+  color: white;
 }
 
-.editor {
-  background: rgb(170, 170, 170);
+
+.topic {
+  color: rgb(255, 255, 255);
+  font-size: 1.6em;
+  font-weight: 300;
+
+  height: 70px;
+  background: rgb(0, 0, 0);
+  border-bottom: 1px solid rgb(179, 179, 179);
+  border-radius: 5px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.block {
+  margin-bottom: 6px;
 }
 </style>
