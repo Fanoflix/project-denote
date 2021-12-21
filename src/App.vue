@@ -3,7 +3,10 @@
 
   <div class="main-area">
     <SideCard @show-note="resetModelAndCreateNew" />
-    <TheTextArea :model="model" />
+    <div class="empty" v-if="model.Topic == underfined">
+      Add a new note or select one from the left to view!
+    </div>
+    <TheTextArea v-else :model="model" />
   </div>
 </template>
 
@@ -24,15 +27,13 @@ export default {
       model: {},
     };
   },
-  beforeMount() {
-    this.model.Content = "";
-  },
   methods: {
     resetModelAndCreateNew(data) {
       console.log(data);
       if (data === "") {
         this.model = {};
         this.model.Topic = "*new note";
+        this.model.Content = "";
       } else {
         this.model.Topic = data.Topic;
         this.model.Content = data.Content;
@@ -63,6 +64,14 @@ export default {
   flex-direction: row;
   width: 100%;
   height: 100%;
+}
+
+.empty {
+  height: auto;
+  margin: 10% auto;
+  color: rgb(210, 210, 210);
+  font-weight: 300;
+  font-size: 1.5em;
 }
 
 body {
