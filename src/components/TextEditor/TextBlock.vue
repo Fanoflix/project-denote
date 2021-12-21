@@ -1,6 +1,5 @@
 <template>
   <div class="block-container block">
-    <div class="add-button" @click="addNewBlock()">+</div>
     <quill-editor
       class="editor"
       v-model:content="options.content"
@@ -8,7 +7,6 @@
       toolbar="full"
       contentType="html"
       :options="options"
-      @click="debug()"
     />
   </div>
 </template>
@@ -16,11 +14,9 @@
 <script>
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.bubble.css";
-import Hljs from "highlightjs";
-import "highlight.js/styles/googlecode.css";
 
 export default {
-  props: [],
+  props: ["content"],
   emits: [],
   components: {
     QuillEditor,
@@ -28,7 +24,7 @@ export default {
   data() {
     return {
       options: {
-        content: "",
+        content: this.content,
         theme: "bubble",
         // debug: "info",
         toolbar: "full",
@@ -39,21 +35,7 @@ export default {
       },
     };
   },
-  mounted() {
-    Hljs.initHighlightingOnLoad();
-  },
-  methods: {
-    debug() {
-      console.log(this.options.content);
-    },
-    addNewBlock() {
-      console.log(this.options.content);
-      this.$emit("addNewBlock", {
-        index: this.index,
-        content: this.options.content,
-      });
-    },
-  },
+  methods: {},
 };
 </script>
 
@@ -61,26 +43,39 @@ export default {
 .block-container {
   position: relative;
 
-  max-width: 1500px;
+  max-width: 1900px;
+  width: 100%;
   min-width: 500px;
   color: white;
   text-align: left;
 }
 
 .ql-tooltip .ql-toolbar {
-  background: rgb(92, 92, 92);
+  background: rgb(38, 38, 38);
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px -2px rgb(150, 150, 150);
+}
+
+.ql-bubble .ql-editor pre.ql-syntax {
+  background: rgb(30, 30, 30);
+  border-radius: 5px;
+  min-width: 60%;
+  width: fit-content;
+  border-bottom-left-radius: 0px;
+  border-top-left-radius: 0px;
+  border-left: 1px solid white;
 }
 
 .ql-container {
   border-radius: 5px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
   min-height: 400px;
   height: fit-content;
 }
-
 .editor {
   padding: 0;
   background: rgb(50, 50, 50);
-  /* height: fit-content; */
 }
 
 .add-button {

@@ -1,19 +1,43 @@
 <template>
   <TitleCard />
-  <!-- <div class="main-container"> -->
-  <TheTextArea />
-  <!-- </div> -->
+
+  <div class="main-area">
+    <SideCard @show-note="resetModelAndCreateNew" />
+    <TheTextArea :model="model" />
+  </div>
 </template>
 
 <script>
 import TitleCard from "./components/Cards/TitleCard.vue";
 import TheTextArea from "./components/TextEditor/TheTextArea.vue";
+import SideCard from "./components/Cards/SideCard.vue";
 
 export default {
   name: "App",
   components: {
     TitleCard,
     TheTextArea,
+    SideCard,
+  },
+  data() {
+    return {
+      model: {},
+    };
+  },
+  beforeMount() {
+    this.model.Content = "";
+  },
+  methods: {
+    resetModelAndCreateNew(data) {
+      console.log(data);
+      if (data === "") {
+        this.model = {};
+        this.model.Topic = "*new note";
+      } else {
+        this.model.Topic = data.Topic;
+        this.model.Content = data.Content;
+      }
+    },
   },
 };
 </script>
@@ -32,15 +56,18 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0;
-  padding: 0;
+}
+
+.main-area {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
 }
 
 body {
-  display: flex;
   height: 100vh;
-  flex-direction: row;
-  justify-content: center;
+  width: 100vw;
   background: rgb(73, 73, 73);
 }
 </style>

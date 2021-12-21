@@ -1,63 +1,53 @@
 <template>
   <div class="main-text-container">
     <h5 class="topic">
-      {{ topic }}
+      {{ model.Topic }}
     </h5>
-    <!-- <template v-for="(child, index) in blocks" :key="index + count">
-      <TextBlock @add-new-block="createNewBlock" :index="index" :is="child">
-      </TextBlock>
-    </template> -->
-
-    <TextBlock />
+    <TextBlock :content="model.Content" />
   </div>
 </template>
 
 <script>
 import TextBlock from "./TextBlock.vue";
 export default {
+  props: ["model"],
   components: {
     TextBlock,
   },
   data() {
     return {
-      count: 1,
-      topic: "Testing",
-      blocks: [{ name: "TextBlock" }],
     };
   },
-  methods: {
-    createNewBlock() {
-      this.blocks.push({ name: "TextBlock" });
-    },
-  },
+  methods: {},
 };
 </script>
 
 <style scoped>
-
 .main-text-container {
-  width: 80%;
+  width: 90%;
   color: white;
+  margin: 20px 1%;
 }
-
 
 .topic {
   color: rgb(255, 255, 255);
-  font-size: 1.6em;
+  font-size: 1.4em;
   font-weight: 300;
 
-  height: 70px;
-  background: rgb(0, 0, 0);
-  border-bottom: 1px solid rgb(179, 179, 179);
+  height: 50px;
+  background: rgb(33, 33, 33);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 5px;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
+
+  max-width: 1900px;
   width: 100%;
+  min-width: 500px;
 
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
 }
 
 .block {

@@ -1,8 +1,8 @@
 <template>
   <div class="title-container">
     <div class="text-container">
-      <h1>Project Denote</h1>
-      <h4>simple note taking app</h4>
+      <p class="h1">project denote</p>
+      <p class="h4">simple note taking app</p>
     </div>
   </div>
 </template>
@@ -10,31 +10,45 @@
 <style scoped>
 .title-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  text-align: center;
+  justify-content: space-evenly;
 
   width: 100%;
-  height: 250px;
+  height: 140px;
   background: rgb(26, 26, 26);
   color: white;
-
-  margin-bottom: 30px;
 }
 
-h1 {
-  font-size: 6em;
-  font-weight: 100;
-  letter-spacing: -5px;
+.text-container {
+  width: 95%;
+  margin: 0 1.5%;
 }
 
-h4 {
-  color: rgb(124, 124, 124);
-  letter-spacing: 3px;
-  word-spacing: 3px;
-  font-size: 1.6em;
-  font-weight: 600;
+.h1 {
+  font-size: 30px;
+  font-weight: 400;
   font-variant: small-caps;
+}
+
+.h4 {
+  margin-top: -10px;
+  color: rgb(124, 124, 124);
+  font-size: 20px;
+  font-weight: 400;
+  font-variant: small-caps;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  background: black;
+  height: 50px;
+  width: 120px;
+  padding: 30px;
+  color: white;
 }
 </style>
