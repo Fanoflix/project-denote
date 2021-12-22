@@ -1,34 +1,35 @@
 <template>
   <div class="block-container block">
-    <div class="add-button" @click="addNewBlock()">+</div>
     <quill-editor
+      ref="qe"
       class="editor"
       v-model:content="options.content"
       theme="bubble"
       toolbar="full"
       contentType="html"
       :options="options"
-      @click="debug()"
     />
+  </div>
+
+  <div class="buttons">
+    <button class="save" @click="sendNote">save</button>
   </div>
 </template>
 
 <script>
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.bubble.css";
-import Hljs from "highlightjs";
-import "highlight.js/styles/googlecode.css";
 
 export default {
-  props: [],
-  emits: [],
+  props: ["topic", "content"],
+  emits: ["sendNote"],
   components: {
     QuillEditor,
   },
   data() {
     return {
       options: {
-        content: "",
+        content: this.content,
         theme: "bubble",
         // debug: "info",
         toolbar: "full",
@@ -39,48 +40,55 @@ export default {
       },
     };
   },
-  mounted() {
-    Hljs.initHighlightingOnLoad();
+  computed: {
+    editor() {
+      return this.$refs.qe;
+    },
+  },
+  watch: {
+    content(newVal) {
+      this.setNewContent(newVal);
+    },
   },
   methods: {
-    debug() {
-      console.log(this.options.content);
+    setNewContent() {
+      this.editor.setContents(this.content);
     },
-    addNewBlock() {
-      console.log(this.options.content);
-      this.$emit("addNewBlock", {
-        index: this.index,
-        content: this.options.content,
-      });
+    sendNote() {
+      this.$emit("sendNote", this.options.content);
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
 .block-container {
   position: relative;
 
-  max-width: 1500px;
-  min-width: 500px;
+  max-width: 1900px;
+  width: 100%;
+  min-width: 200px;
   color: white;
   text-align: left;
 }
 
 .ql-tooltip .ql-toolbar {
-  background: rgb(92, 92, 92);
+  background: rgb(38, 38, 38);
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px -2px rgb(150, 150, 150);
 }
+
 
 .ql-container {
   border-radius: 5px;
-  min-height: 400px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  min-height: 60px;
   height: fit-content;
 }
-
 .editor {
   padding: 0;
   background: rgb(50, 50, 50);
-  /* height: fit-content; */
 }
 
 .add-button {
@@ -110,5 +118,35 @@ export default {
   background: rgb(255, 255, 255);
   color: black;
   font-weight: 900;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.buttons button {
+  width: 70px;
+  height: 30px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgb(30, 115, 226);
+  color: white;
+  font-variant: small-caps;
+  font-size: 0.8em;
+  font-weight: 600;
+  filter: grayscale(0.6);
+}
+
+.buttons button:hover {
+  filter: grayscale(0);
 }
 </style>

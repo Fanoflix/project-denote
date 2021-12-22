@@ -1,63 +1,150 @@
 <template>
   <div class="main-text-container">
-    <h5 class="topic">
-      {{ topic }}
-    </h5>
-    <!-- <template v-for="(child, index) in blocks" :key="index + count">
-      <TextBlock @add-new-block="createNewBlock" :index="index" :is="child">
-      </TextBlock>
-    </template> -->
-
-    <TextBlock />
+    <div class="top-container">
+      <input class="topic" v-model="noteTopic" placeholder="Enter note title" />
+      <div class="buttons">
+        <Dropdown class="dropdown" label="add to group" :data="groupsList" />
+        <!-- ADD THIS ==>  :data="groupsList" -->
+        <button class="delete" @click="deleteNote">delete</button>
+      </div>
+    </div>
+    <TextBlock
+      :topic="noteTopic"
+      :content="model.content"
+      @sendNote="sendNoteContent"
+    />
   </div>
 </template>
 
 <script>
 import TextBlock from "./TextBlock.vue";
+import Dropdown from "../Dropdown/Dropdown.vue";
+
 export default {
+  props: ["model"],
+  emits: ["deleteNote", "saveNote"],
   components: {
     TextBlock,
+    Dropdown,
+  },
+  watch: {
+    noteTopic(newVal) {
+      if (newVal.length === 0) {
+        // this.noteTopic = "Enter note title";
+      }
+    },
   },
   data() {
     return {
-      count: 1,
-      topic: "Testing",
-      blocks: [{ name: "TextBlock" }],
+      topicPlaceholder: "Enter note title",
+      noteTopic: "",
+      // groupsList: ["Test1", "Test2", "Test3"],
     };
   },
+  mounted() {
+    if (this.model.topic) {
+      this.noteTopic = this.model.topic;
+    } else {
+      this.noteTopic = "";
+    }
+    // get the groups list at mounting
+  },
   methods: {
-    createNewBlock() {
-      this.blocks.push({ name: "TextBlock" });
+    deleteNote() {
+      this.$emit("deleteNote", this.model.id);
+    },
+    sendNoteContent(content) {
+      this.$emit("saveNote", {
+        id: this.model.id,
+        topic: this.noteTopic,
+        content: content,
+      });
     },
   },
 };
 </script>
 
 <style scoped>
-
 .main-text-container {
-  width: 80%;
+  width: 90%;
   color: white;
+  margin: 20px 20px;
 }
-
-
-.topic {
-  color: rgb(255, 255, 255);
-  font-size: 1.6em;
-  font-weight: 300;
-
-  height: 70px;
-  background: rgb(0, 0, 0);
-  border-bottom: 1px solid rgb(179, 179, 179);
+.top-container {
+  width: 100%;
+  background: rgb(33, 33, 33);
   border-radius: 5px;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
-  width: 100%;
+  height: 50px;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.topic {
+  background: transparent;
+  border: none;
+  color: rgb(255, 255, 255);
+  font-size: 1.1em;
+  font-weight: 300;
+
+  width: 500px;
+  min-width: 200px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   display: flex;
   align-items: center;
+  padding: 0 15px;
+  margin: 3px 3px;
+  border-radius: 4px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.topic:focus {
+  outline: none;
+  background: rgb(44, 44, 44);
+}
+
+.topic::placeholder {
+  color: gray;
+  font-style: italic;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+  padding: 0 10px;
+}
+.buttons button {
+  width: 70px;
+  height: 30px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+
+  display: flex;
   justify-content: center;
-  text-align: center;
+  align-items: center;
+  filter: grayscale(0.6);
+  color: rgb(214, 214, 214);
+}
+.buttons button:hover {
+  color: white;
+  filter: grayscale(0);
+}
+.delete {
+  background: red;
+  color: white;
+  font-size: 0.8em;
+  font-weight: 600;
+  font-variant: small-caps;
 }
 
 .block {
