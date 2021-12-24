@@ -2,19 +2,22 @@
   <div class="sidebar-container">
     <div class="new-note" @click="showNote('')">new note +</div>
 
-    <SideBarItem
-      v-for="note in notesList"
-      :key="note.id"
-      :title="note.topic"
-      @click="showNote(note)"
-    />
+    <div v-for="group in groupsList" :key="group.id" class="group-container">
+      <p class="group">{{ group.name }}</p>
+      <SideBarItem
+        v-for="note in group.notes"
+        :key="note.id"
+        :title="note.topic"
+        @click="showNote(note)"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import SideBarItem from "./SideBarItem.vue";
 export default {
-  props: ["notesList"],
+  props: ["groupsList"],
   components: {
     SideBarItem,
   },
@@ -36,9 +39,9 @@ export default {
 
 <style scoped>
 .sidebar-container {
-  width: 18%;
   height: auto;
-  min-width: 165px;
+  min-width: 200px;
+  width: 200px;
   max-width: 225px;
 
   background: rgb(0, 0, 0);
@@ -67,6 +70,35 @@ export default {
   background: rgb(30, 30, 30);
 }
 
+.group-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 3px;
+}
+
+.group-container .group {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  cursor: normal;
+  color: rgb(0, 0, 0);
+  background: rgb(126, 126, 126);
+  margin-bottom: 3px;
+  width: 97%;
+  height: 38px;
+  padding-left: 10px;
+  font-weight: 500;
+  font-size: 1em;
+  border-radius: 2px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .new-note:hover {
   background: rgb(39, 39, 39);
 }

@@ -2,16 +2,21 @@
   <TitleCard />
 
   <div class="main-area">
-    <SideCard @show-note="resetModelAndCreateNew" :notesList="notesList" />
+    <SideCard @show-note="resetModelAndCreateNew" :groupsList="groupsList" />
+
+    <transition name="textarea-fade">
+      <TheTextArea
+        v-if="renderNote"
+        :model="model"
+        :groupsList="groupsList"
+        @delete-note="deleteNote"
+        @save-note="saveNote"
+      />
+    </transition>
+
     <div class="empty" v-if="!renderNote">
       add a new note or select one from the left
     </div>
-    <TheTextArea
-      v-else
-      :model="model"
-      @delete-note="deleteNote"
-      @save-note="saveNote"
-    />
   </div>
 </template>
 
@@ -29,11 +34,49 @@ export default {
     SideCard,
   },
   mounted() {
-    this.getNotesList();
+    this.getGroupsList();
   },
   data() {
     return {
-      notesList: [],
+      // groupsList: [],
+      groupsList: [
+        {
+          id: 1,
+          name: "group ",
+          notes: [
+            {
+              id: 1,
+              topic: "note 1",
+              content: "note EZZZZZZZZZZ content",
+            },
+            {
+              id: 2,
+              topic: "note 2",
+              content: "note testing 2222 content",
+            },
+          ],
+        },
+        {
+          id: 2,
+          name: "group 2",
+          notes: [
+            {
+              id: 1,
+              topic: "note a",
+              content: "note 1 asd ds dsda  content",
+            },
+            {
+              id: 2,
+              topic: "note b",
+              content: "note 2 cvc bv add content",
+            },
+          ],
+        },
+        {
+          id: 3,
+          name: "group 3",
+        },
+      ],
       model: {},
       renderNote: false,
     };
@@ -44,7 +87,7 @@ export default {
         this.model = {};
         this.model.id = -1;
         this.model.topic = "";
-        this.model.content = `\n\n\n\n\n\n\n`;
+        this.model.content = `\n\n\n\n`;
       } else {
         console.log(data);
         this.model.topic = data.topic;
@@ -53,11 +96,12 @@ export default {
       }
       this.renderNote = true;
     },
-    getNotesList() {
+    getGroupsList() {
       axios
-        .get("http://localhost:8080/api/Notes")
+        .get("http://localhost:8080/api/Groups")
         .then((res) => {
-          this.notesList = res.data;
+          console.log(res.data);
+          this.groupsList = res.data;
         })
         .catch((err) => {
           console.error(err);
@@ -68,12 +112,13 @@ export default {
         .delete(`http://localhost:8080/api/Notes/${id}`)
         .then((res) => {
           console.log(res);
-          this.getNotesList();
+          this.getGroupsList();
         })
         .catch((err) => {
           console.log(err);
         });
       this.renderNote = false;
+      this.model = {};
     },
     saveNote(model) {
       if (model.id == -1) {
@@ -104,6 +149,7 @@ export default {
           });
       } else {
         // call put
+        console.log(model);
         axios
           .put(
             `http://localhost:8080/api/Notes/${model.id}`,
@@ -184,6 +230,7 @@ export default {
   color: rgb(160, 160, 160);
   font-weight: 500;
   font-size: 1.5em;
+  user-select: none;
 }
 
 body {
@@ -194,7 +241,6 @@ body {
   overflow-x: hidden;
   background: rgb(73, 73, 73);
 }
-
 /* Code Box styling */
 
 .ql-bubble .ql-editor pre.ql-syntax {
@@ -205,5 +251,20 @@ body {
   border-bottom-left-radius: 0px;
   border-top-left-radius: 0px;
   border-left: 1px solid white;
+}
+
+.textarea-fade-enter-from {
+  transition: all 0.1s ease-in;
+  transform: translateY(100px);
+  opacity: 0;
+}
+
+.textarea-fade-leave-to,
+.textarea-fade-leave-active {
+  transition: all 0s;
+}
+
+.textarea-fade-enter-active {
+  transition: all 0.2s ease-in-out;
 }
 </style>

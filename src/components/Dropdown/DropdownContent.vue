@@ -1,47 +1,87 @@
 <template>
-  <transition name="fade">
-    <div v-if="active">
-      <div class="items-container">
-        <div class="selectItem" v-for="group in groupsList" :key="group">
-          <p class="name">{{ group }}</p>
-        </div>
-        <div class="selectItem add-group">
-          <p class="name">Create new group +</p>
+  <div>
+    <transition name="fade">
+      <div v-if="active">
+        <div class="items-container">
+          <div
+            class="selectItem"
+            v-for="group in groupsList"
+            @click="addToGroup(group.id, currentNote)"
+            :key="group.id"
+          >
+            <p class="name">{{ group.name }}</p>
+          </div>
+          <div class="selectItem add-group" @click="toggleDialog">
+            <p class="name">Create new group +</p>
+          </div>
         </div>
       </div>
-    </div>
-  </transition>
+    </transition>
+
+    <teleport to="body">
+      <CreateGroup />
+    </teleport>
+  </div>
 </template>
 
 <script>
+import CreateGroup from "../Cards/CreateGroup.vue";
+import axios from "axios";
 export default {
   name: "DropdownContent",
   inject: ["sharedState"],
-  props: ["groupsList"],
-  mounted() {},
+  props: ["groupsList", "currentNote"],
+  components: {
+    CreateGroup,
+  },
+  provide() {
+    return {
+      dialogState: this.dialogState,
+    };
+  },
   data() {
-    return {};
+    return {
+      dialogState: {
+        showDialog: false,
+      },
+    };
+  },
+  methods: {
+    addToGroup(groupId, currentNote) {
+      console.log(groupId, currentNote);
+      axios
+        .put(
+          `http://localhost:8080/api/Groups/${groupId}`,
+          {
+            noteId: currentNote.id,
+          },
+          {
+            headers: {
+              contentType: "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    toggleDialog() {
+      this.dialogState.showDialog = true;
+      console.log(this.dialogState.showDialog);
+    },
   },
   computed: {
     active() {
       return this.sharedState.active;
     },
   },
-  watch: {
-    active() {},
-  },
 };
 </script>
 
-<style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
-}
-
+<style scoped>
 .items-container {
   display: flex;
   flex-direction: column;
@@ -50,13 +90,15 @@ export default {
 
   position: absolute;
   right: 0;
-  top: 10px;
+  top: 12px;
 
   height: auto;
+  max-height: 500px;
   min-width: 150px;
   width: fit-content;
+
   max-width: 220px;
-  z-index: 10;
+  z-index: 15;
   border-radius: 6px;
 
   background: rgb(21, 21, 21);
@@ -100,5 +142,18 @@ export default {
 .items-container .selectItem:active {
   background: rgb(210, 210, 210);
   color: black;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  transition: all 0.15s ease-in-out;
+  height: 0px;
+  transform: translate(20px, -10px);
+  opacity: 0;
+}
+
+.fade-leave-active,
+.fade-enter-active {
+  transition: all 0.15s ease-in-out;
 }
 </style>

@@ -17,15 +17,17 @@ export default {
 <style scoped>
 .sideitem-container {
   user-select: none;
-  width: 100%;
-  height: 50px;
+  width: 97%;
+  height: 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  padding-left:15px;
 
-  margin-bottom: 6px;
-  background: rgb(20, 20, 20);
+  margin-bottom: 3px;
+  background: rgb(32, 32, 32);
+  border-radius: 3px;
 
   cursor: pointer;
 }

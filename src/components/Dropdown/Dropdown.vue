@@ -5,10 +5,13 @@
         class="carrot"
         src="../../assets/down-carrot.svg"
         alt=""
-        style="{{sharedState.active ? 'transform: rotate(180deg);' : ''}}"
       />
     </button>
-    <DropdownContent style="position: relative" :groupsList="groupsList" />
+    <DropdownContent
+      style="position: relative; z-index: 15;"
+      :groupsList="groupsList"
+      :currentNote="currentNote"
+    />
   </div>
 </template>
 
@@ -18,7 +21,8 @@ export default {
   name: "Dropdown",
   props: [
     "label",
-    // "groupsList"
+    "currentNote",
+    "groupsList"
   ],
   components: {
     DropdownContent,
@@ -33,7 +37,6 @@ export default {
       sharedState: {
         active: false,
       },
-      groupsList: ["Test1", "Test2", "Test3"],
     };
   },
   methods: {
@@ -45,11 +48,15 @@ export default {
 </script>
 
 <style scoped>
+/* template {
+  position: relative;
+} */
 button {
   width: 130px;
   height: 30px;
   border: none;
   border-radius: 3px;
+  user-select: none;
   cursor: pointer;
 
   font-weight: 600;

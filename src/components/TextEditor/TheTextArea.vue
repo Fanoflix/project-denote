@@ -1,9 +1,18 @@
 <template>
   <div class="main-text-container">
     <div class="top-container">
-      <input class="topic" v-model="noteTopic" placeholder="Enter note title" />
+      <input
+        class="topic"
+        v-model="currentTopic"
+        placeholder="Enter note title"
+      />
       <div class="buttons">
-        <Dropdown class="dropdown" label="add to group" :data="groupsList" />
+        <Dropdown
+          class="dropdown"
+          label="add to group"
+          :groupsList="groupsList"
+          :currentNote="model"
+        />
         <!-- ADD THIS ==>  :data="groupsList" -->
         <button class="delete" @click="deleteNote">delete</button>
       </div>
@@ -21,7 +30,7 @@ import TextBlock from "./TextBlock.vue";
 import Dropdown from "../Dropdown/Dropdown.vue";
 
 export default {
-  props: ["model"],
+  props: ["model", "groupsList"],
   emits: ["deleteNote", "saveNote"],
   components: {
     TextBlock,
@@ -38,16 +47,15 @@ export default {
     return {
       topicPlaceholder: "Enter note title",
       noteTopic: "",
-      // groupsList: ["Test1", "Test2", "Test3"],
     };
   },
   mounted() {
     if (this.model.topic) {
+      console.log("here");
       this.noteTopic = this.model.topic;
     } else {
       this.noteTopic = "";
     }
-    // get the groups list at mounting
   },
   methods: {
     deleteNote() {
@@ -56,9 +64,18 @@ export default {
     sendNoteContent(content) {
       this.$emit("saveNote", {
         id: this.model.id,
-        topic: this.noteTopic,
+        topic: this.currentTopic,
         content: content,
       });
+    },
+  },
+  computed: {
+    currentTopic() {
+      if (this.model.topic) {
+        return this.model.topic;
+      } else {
+        return "";
+      }
     },
   },
 };
@@ -89,8 +106,8 @@ export default {
   font-size: 1.1em;
   font-weight: 300;
 
-  width: 500px;
-  min-width: 200px;
+  width: 30%;
+  min-width: 120px;
 
   white-space: nowrap;
   overflow: hidden;
