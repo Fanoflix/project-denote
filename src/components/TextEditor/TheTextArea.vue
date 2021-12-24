@@ -3,7 +3,8 @@
     <div class="top-container">
       <input
         class="topic"
-        v-model="currentTopic"
+        :value="model.topic"
+        @input="updateTopic"
         placeholder="Enter note title"
       />
       <div class="buttons">
@@ -31,17 +32,10 @@ import Dropdown from "../Dropdown/Dropdown.vue";
 
 export default {
   props: ["model", "groupsList"],
-  emits: ["deleteNote", "saveNote"],
+  emits: ["deleteNote", "saveNote", "input"],
   components: {
     TextBlock,
     Dropdown,
-  },
-  watch: {
-    noteTopic(newVal) {
-      if (newVal.length === 0) {
-        // this.noteTopic = "Enter note title";
-      }
-    },
   },
   data() {
     return {
@@ -64,18 +58,17 @@ export default {
     sendNoteContent(content) {
       this.$emit("saveNote", {
         id: this.model.id,
-        topic: this.currentTopic,
+        topic: this.newTopic,
         content: content,
       });
     },
+    updateTopic(event) {
+      this.newTopic = event.target.value;
+    },
   },
   computed: {
-    currentTopic() {
-      if (this.model.topic) {
-        return this.model.topic;
-      } else {
-        return "";
-      }
+    propNoteTopic() {
+      return this.model.topic;
     },
   },
 };
