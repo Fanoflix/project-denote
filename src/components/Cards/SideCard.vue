@@ -24,7 +24,6 @@ export default {
   data() {
     return {};
   },
-  mounted() {},
   methods: {
     showNote(note) {
       if (note === "") {
@@ -90,10 +89,10 @@ export default {
   margin-bottom: 3px;
   width: 97%;
   height: 38px;
-  padding-left: 10px;
+  padding-left: 13px;
   font-weight: 500;
   font-size: 1em;
-  border-radius: 2px;
+  border-radius: 20px;
 
   white-space: nowrap;
   overflow: hidden;

@@ -92,6 +92,7 @@ export default {
   width: 30%;
   min-width: 300px;
   height: 180px;
+  will-change: height;
 
   color: rgb(0, 0, 0);
 
@@ -251,7 +252,7 @@ input::placeholder {
 
 .dialog-fade-enter-from,
 .dialog-fade-leave-to {
-  transform: translate(-20px, -300px);
+  /* transform: translate(-20px, -300px); */
   opacity: 0;
   height: 0px;
 }

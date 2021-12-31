@@ -45,7 +45,6 @@ export default {
   },
   mounted() {
     if (this.model.topic) {
-      console.log("here");
       this.noteTopic = this.model.topic;
     } else {
       this.noteTopic = "";

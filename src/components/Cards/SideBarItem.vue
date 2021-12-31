@@ -6,11 +6,7 @@
 
 <script>
 export default {
-  props: ["title"],
-  data() {
-    return {};
-  },
-  methdos: {},
+  props: ["title"]
 };
 </script>
 

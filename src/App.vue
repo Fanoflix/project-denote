@@ -33,12 +33,8 @@ export default {
     TheTextArea,
     SideCard,
   },
-  mounted() {
-    this.getGroupsList();
-  },
   data() {
     return {
-      // groupsList: [],
       groupsList: [
         {
           id: 1,
@@ -81,6 +77,9 @@ export default {
       renderNote: false,
     };
   },
+  mounted() {
+    this.getGroupsList();
+  },
   methods: {
     resetModelAndCreateNew(data) {
       if (data === "") {
@@ -89,7 +88,6 @@ export default {
         this.model.topic = "";
         this.model.content = `\n\n\n\n`;
       } else {
-        console.log(data);
         this.model.topic = data.topic;
         this.model.content = data.content;
         this.model.id = data.id;
@@ -122,7 +120,6 @@ export default {
     },
     saveNote(model) {
       if (model.id == -1) {
-        console.log(model);
         // call post
         axios
           .post(
@@ -142,14 +139,13 @@ export default {
           )
           .then((res) => {
             console.log(res.data);
-            this.getNotesList();
+            this.getGroupsList();
           })
           .catch((err) => {
             console.log(err);
           });
       } else {
         // call put
-        console.log(model);
         axios
           .put(
             `http://localhost:8080/api/Notes/${model.id}`,
@@ -168,7 +164,7 @@ export default {
           )
           .then((res) => {
             console.log(res.data);
-            this.getNotesList();
+            this.getGroupsList();
           })
           .catch((err) => {
             console.log(err);
@@ -265,6 +261,6 @@ body {
 }
 
 .textarea-fade-enter-active {
-  transition: all 0.2s ease-in-out;
+  transition: all 0.1s ease-in-out;
 }
 </style>

@@ -146,14 +146,13 @@ export default {
 
 .fade-enter-from,
 .fade-leave-to {
-  transition: all 0.15s ease-in-out;
   height: 0px;
-  transform: translate(20px, -10px);
+  transform: translate(7px, -7px);
   opacity: 0;
 }
 
 .fade-leave-active,
 .fade-enter-active {
-  transition: all 0.15s ease-in-out;
+  transition: all 0.07s ease-in-out;
 }
 </style>
